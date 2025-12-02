@@ -68,28 +68,6 @@
                     },
                     "creditos": 4.0,
                     "requisitos": []
-                },
-                {
-                    "codigo": "ICPX06",
-                    "nome": "Atividades Complementares Bcc",
-                    "ch": {
-                        "teorica": 0,
-                        "pratica": 90,
-                        "extensao": 0
-                    },
-                    "creditos": 2.0,
-                    "requisitos": []
-                },
-                {
-                    "codigo": "ICPZ55",
-                    "nome": "Ativ Curricular Extensão - Bcc",
-                    "ch": {
-                        "teorica": 0,
-                        "pratica": 0,
-                        "extensao": 320
-                    },
-                    "creditos": 0.0,
-                    "requisitos": []
                 }
             ]
         },
@@ -514,28 +492,6 @@
                         "ICP353 (P)",
                         "ICP362 (P)ICP362 = ICP510ICP353 = MAB353ICP362 = MAB510"
                     ]
-                },
-                {
-                    "codigo": "Atividades Academicas Optativas",
-                    "nome": "8.0",
-                    "ch": {
-                        "teorica": 120,
-                        "pratica": 0,
-                        "extensao": 0
-                    },
-                    "creditos": null,
-                    "requisitos": []
-                },
-                {
-                    "codigo": "Atividades Academicas Optativas (GrupoHumanidades)",
-                    "nome": "4.0",
-                    "ch": {
-                        "teorica": 60,
-                        "pratica": 0,
-                        "extensao": 0
-                    },
-                    "creditos": null,
-                    "requisitos": []
                 }
             ]
         },
