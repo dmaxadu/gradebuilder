@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReactFlow, {
     useNodesState,
     useEdgesState,
@@ -18,59 +18,221 @@ import "./App.css";
 import CURRICULUM_DATA from "./curriculo.json";
 
 /* CONFIGURAÇÃO DO TAMANHO DOS NÓS */
-const nodeWidth = 200;
+const nodeWidth = 150;
 const nodeHeight = 60;
-const COLUMN_WIDTH = 280; // Distância fixa entre as colunas
-const ROW_HEIGHT = 110; // Distância vertical FIXA entre matérias do mesmo período
-const SNAP_THRESHOLD = 25; // Distância em pixels para o "imã" ativar
+const COLUMN_WIDTH = 230;
+const ROW_HEIGHT = 130;
+const MAX_CREDITS = 32; // Limite de créditos
 
 // Paleta de Cores
 const COLOR_IDLE_EDGE = "#b1b1b7";
 const COLOR_ACTIVE_EDGE = "#000000";
 
+// Cor fixa para todas as eletivas, independentemente do período
+const CONDITIONAL_ELECTIVE_COLOR = "#ffe0b2"; // Escolha Condicionada
+const RESTRICTED_ELECTIVE_COLOR = "#c5cae9"; // Escolha Restrita
+
+const getElectiveColor = (data) =>
+    data?.isRestricted ? RESTRICTED_ELECTIVE_COLOR : CONDITIONAL_ELECTIVE_COLOR;
+
 const PERIOD_COLORS = [
-    "#ccc", // Fallback
-    "#e0f7fa", // P1
-    "#e8f5e9", // P2
-    "#fffde7", // P3
-    "#fbe9e7", // P4
-    "#fce4ec", // P5
-    "#f3e5f5", // P6
-    "#ede7f6", // P7
+    "#ccc",
+    "#e0f7fa",
+    "#e8f5e9",
+    "#fffde7",
+    "#fbe9e7",
+    "#fce4ec",
+    "#f3e5f5",
+    "#ede7f6",
 ];
+
+const getPeriodColor = (period) => {
+    const index = period % PERIOD_COLORS.length;
+    return PERIOD_COLORS[index];
+};
+
+// --- COMPONENTE DE NOTIFICAÇÃO (TOAST) ---
+const NotificationToast = ({ message, onClose }) => {
+    if (!message) return null;
+
+    return (
+        <div
+            style={{
+                position: "fixed",
+                top: "20px",
+                right: "20px",
+                background: "#ffdddd",
+                borderLeft: "6px solid #f44336",
+                padding: "15px 20px",
+                borderRadius: "4px",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
+                zIndex: 9999,
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                maxWidth: "300px",
+            }}
+        >
+            <div
+                style={{
+                    color: "#d32f2f",
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                }}
+            >
+                {message}
+            </div>
+            <button
+                onClick={onClose}
+                style={{
+                    background: "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    color: "#d32f2f",
+                }}
+            >
+                ✕
+            </button>
+        </div>
+    );
+};
+
+// --- COMPONENTE DE CABEÇALHO ---
+const HeaderNode = ({ data }) => {
+    return (
+        <div
+            style={{
+                pointerEvents: "none",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                height: "100%",
+                textAlign: "center",
+            }}
+        >
+            {data.label}
+        </div>
+    );
+};
+
+const calculateCreditsPerPeriod = (nodes) => {
+    const totals = {};
+    nodes.forEach((node) => {
+        if (node.id.startsWith("header-")) return;
+        const p = node.data.periodo;
+        const cred = node.data.creditos || 0;
+        if (!totals[p]) totals[p] = 0;
+        totals[p] += cred;
+    });
+    return totals;
+};
+
+// --- FUNÇÃO: Gera os títulos das colunas ---
+const getPeriodHeaders = (creditTotals = {}, limit = 7) => {
+    const headers = [];
+    for (let i = 1; i <= limit; i++) {
+        const total = creditTotals[i] || 0;
+        const isOverLimit = total > MAX_CREDITS;
+
+        let color = "#666";
+        if (isOverLimit) color = "#d32f2f";
+
+        const labelContent = (
+            <>
+                <div
+                    style={{
+                        fontSize: "18px",
+                        fontWeight: "bold",
+                        color: "#555",
+                    }}
+                >
+                    {i}º Período
+                </div>
+                <div
+                    style={{
+                        fontSize: "13px",
+                        marginTop: "2px",
+                        color: color,
+                        fontWeight: isOverLimit ? "bold" : "normal",
+                    }}
+                >
+                    Créditos totais: {total}
+                </div>
+            </>
+        );
+
+        headers.push({
+            id: `header-period-${i}`,
+            type: "header",
+            data: { label: labelContent },
+            position: { x: (i - 1) * COLUMN_WIDTH, y: -80 },
+            draggable: false,
+            selectable: false,
+            style: {
+                width: nodeWidth,
+                height: 60,
+                background: "transparent",
+                border: "none",
+                pointerEvents: "none",
+            },
+        });
+    }
+    return headers;
+};
 
 const getLayoutedElements = (nodes, edges, direction = "LR") => {
     const dagreGraph = new dagre.graphlib.Graph();
     dagreGraph.setDefaultEdgeLabel(() => ({}));
-
     dagreGraph.setGraph({ rankdir: direction });
 
+    const regularNodes = [];
+    const conditionalElectiveNodes = [];
+    const restrictedElectiveNodes = [];
+
     nodes.forEach((node) => {
-        dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+        const period = node.data?.periodo ?? 0;
+
+        if (period > 0) {
+            regularNodes.push(node);
+            dagreGraph.setNode(node.id, {
+                width: nodeWidth,
+                height: nodeHeight,
+            });
+        } else {
+            // período 0 => está no pool de optativas
+            if (node.data?.isElective && node.data?.isRestricted) {
+                restrictedElectiveNodes.push(node);
+            } else if (node.data?.isElective) {
+                conditionalElectiveNodes.push(node);
+            }
+        }
     });
 
     edges.forEach((edge) => {
-        dagreGraph.setEdge(edge.source, edge.target);
+        if (dagreGraph.node(edge.source) && dagreGraph.node(edge.target)) {
+            dagreGraph.setEdge(edge.source, edge.target);
+        }
     });
 
     dagre.layout(dagreGraph);
 
-    nodes.forEach((node) => {
+    // Posiciona nós regulares (períodos 1..N) em colunas
+    regularNodes.forEach((node) => {
         const nodeWithPosition = dagreGraph.node(node.id);
         node.targetPosition = direction === "LR" ? "left" : "top";
         node.sourcePosition = direction === "LR" ? "right" : "bottom";
 
-        // Forçamos o X baseado no período para garantir colunas
+        const periodo = node.data.periodo;
         node.position = {
-            x: (node.data.periodo - 1) * COLUMN_WIDTH,
+            x: (periodo - 1) * COLUMN_WIDTH,
             y: nodeWithPosition.y,
         };
     });
 
-    // 2. Normaliza o espaçamento vertical e SALVA A POSIÇÃO IDEAL
     const nodesByPeriod = {};
-    
-    nodes.forEach((node) => {
+    regularNodes.forEach((node) => {
         const p = node.data.periodo;
         if (!nodesByPeriod[p]) nodesByPeriod[p] = [];
         nodesByPeriod[p].push(node);
@@ -78,88 +240,284 @@ const getLayoutedElements = (nodes, edges, direction = "LR") => {
 
     Object.keys(nodesByPeriod).forEach((periodKey) => {
         const columnNodes = nodesByPeriod[periodKey];
-        
-        // Ordena pela sugestão do Dagre para manter a topologia
-        columnNodes.sort((a, b) => a.position.y - b.position.y);
+        columnNodes.sort(
+            (a, b) => dagreGraph.node(a.id).y - dagreGraph.node(b.id).y
+        );
 
         columnNodes.forEach((node, index) => {
-            const idealY = index * ROW_HEIGHT + 50;
-            
-            node.position.y = idealY;
-            
-            // --- NOVO: Salvamos onde ele "deveria" estar ---
-            node.data.initialY = idealY; 
+            const idealX = (node.data.periodo - 1) * COLUMN_WIDTH;
+            const idealY = index * ROW_HEIGHT;
+
+            node.position = { x: idealX, y: idealY };
+            node.data.initialY = idealY;
         });
     });
 
-    return { nodes, edges };
+    // --- Pool de optativas abaixo da grade ---
+    let maxRows = 0;
+    Object.values(nodesByPeriod).forEach((columnNodes) => {
+        if (columnNodes.length > maxRows) maxRows = columnNodes.length;
+    });
+
+    const highestPeriod =
+        Object.keys(nodesByPeriod)
+            .map((p) => parseInt(p, 10))
+            .reduce((acc, v) => Math.max(acc, v), 0) || 8;
+
+    const baseY = (maxRows + 1) * ROW_HEIGHT;
+
+    // Painel ESQUERDO: Optativas (Escolha Condicionada)
+    conditionalElectiveNodes.forEach((node, index) => {
+        const colIndex = index % highestPeriod;
+        const rowIndex = Math.floor(index / highestPeriod);
+
+        const x = colIndex * COLUMN_WIDTH;
+        const y = baseY + rowIndex * ROW_HEIGHT;
+
+        node.position = { x, y };
+
+        node.data.initialY = y;
+        node.data.poolX = x;
+        node.data.poolY = y;
+    });
+
+    // Painel DIREITO: Optativas (Escolha Restrita)
+    const restrictedBaseX = highestPeriod * COLUMN_WIDTH + COLUMN_WIDTH; // desloca para a direita
+
+    restrictedElectiveNodes.forEach((node, index) => {
+        const colIndex = index % highestPeriod;
+        const rowIndex = Math.floor(index / highestPeriod);
+
+        const x = restrictedBaseX + colIndex * COLUMN_WIDTH;
+        const y = baseY + rowIndex * ROW_HEIGHT;
+
+        node.position = { x, y };
+
+        node.data.initialY = y;
+        node.data.poolX = x;
+        node.data.poolY = y;
+    });
+
+    // Cabeçalho das optativas (Escolha Condicionada)
+    const electiveHeaderNode = {
+        id: "header-electives",
+        type: "header",
+        data: {
+            label: (
+                <div>
+                    <div
+                        style={{
+                            fontSize: "16px",
+                            fontWeight: "bold",
+                            color: "#333",
+                        }}
+                    >
+                        Disciplinas Optativas (Escolha Condicionada)
+                    </div>
+                    <div
+                        style={{
+                            fontSize: "12px",
+                            marginTop: 4,
+                            color: "#555",
+                        }}
+                    >
+                        Clique para adicionar na grade
+                    </div>
+                </div>
+            ),
+        },
+        position: { x: 0, y: baseY - 80 },
+        draggable: false,
+        selectable: false,
+        style: {
+            width: nodeWidth * 3,
+            height: 60,
+            background: "transparent",
+            border: "none",
+            pointerEvents: "none",
+        },
+    };
+
+    // Cabeçalho das optativas (Escolha Restrita)
+    const restrictedElectiveHeaderNode = {
+        id: "header-electives-restricted",
+        type: "header",
+        data: {
+            label: (
+                <div>
+                    <div
+                        style={{
+                            fontSize: "16px",
+                            fontWeight: "bold",
+                            color: "#333",
+                        }}
+                    >
+                        Disciplinas Optativas (Escolha Restrita)
+                    </div>
+                    <div
+                        style={{
+                            fontSize: "12px",
+                            marginTop: 4,
+                            color: "#555",
+                        }}
+                    >
+                        Clique para adicionar na grade
+                    </div>
+                </div>
+            ),
+        },
+        position: { x: restrictedBaseX, y: baseY - 80 },
+        draggable: false,
+        selectable: false,
+        style: {
+            width: nodeWidth * 3,
+            height: 60,
+            background: "transparent",
+            border: "none",
+            pointerEvents: "none",
+        },
+    };
+
+    return {
+        nodes: [
+            ...regularNodes,
+            electiveHeaderNode,
+            restrictedElectiveHeaderNode,
+            ...conditionalElectiveNodes,
+            ...restrictedElectiveNodes,
+        ],
+        edges,
+    };
 };
 
-/* PARSER DO CURRÍCULO 
-  Transforma o JSON em Nós e Arestas do React Flow
-*/
+const applyElectiveEdgeVisibility = (edges, nodes) => {
+    const byId = new Map(nodes.map((n) => [n.id, n]));
+
+    return edges.map((e) => {
+        const s = byId.get(e.source);
+        const t = byId.get(e.target);
+
+        const sourcePeriod = s?.data?.periodo ?? 0;
+        const targetPeriod = t?.data?.periodo ?? 0;
+        const involvesUnassigned = sourcePeriod <= 0 || targetPeriod <= 0;
+
+        const baseStyle = e.style || {};
+
+        return {
+            ...e,
+            animated: involvesUnassigned ? false : e.animated,
+            style: {
+                ...baseStyle,
+                stroke: baseStyle.stroke || COLOR_IDLE_EDGE,
+                strokeWidth:
+                    baseStyle.strokeWidth !== undefined
+                        ? baseStyle.strokeWidth
+                        : 1,
+                opacity: involvesUnassigned ? 0 : 1,
+            },
+            markerEnd: {
+                type: MarkerType.ArrowClosed,
+                color: COLOR_IDLE_EDGE,
+            },
+        };
+    });
+};
+
+const ELECTIVE_START_PERIOD = 9;
+
+const isElectivePeriod = (periodNumber) =>
+    periodNumber >= ELECTIVE_START_PERIOD;
+
 const generateCurriculumData = () => {
     const generatedNodes = [];
     const generatedEdges = [];
     const validNodeIds = new Set();
 
-    // 1. Criar Nós (Matérias)
-    // Filtramos apenas períodos 1 a 7
-    const filteredPeriods = CURRICULUM_DATA.periodos.filter(
-        (p) => p.numero >= 1 && p.numero <= 7
-    );
+    const allPeriods = CURRICULUM_DATA.periodos;
 
-    filteredPeriods.forEach((periodo) => {
+    allPeriods.forEach((periodo) => {
+        const isElective = isElectivePeriod(periodo.numero);
+        const isRestrictedElective = isElective && periodo.numero === 10; // 10 = Escolha Restrita
+        const initialPeriodo = isElective ? 0 : periodo.numero;
+
         periodo.disciplinas.forEach((disc) => {
             if (!validNodeIds.has(disc.codigo)) {
                 validNodeIds.add(disc.codigo);
 
+                const labelContent = (
+                    <>
+                        {disc.nome}
+                        <div
+                            style={{
+                                fontSize: "10px",
+                                color: "#666",
+                                marginTop: "4px",
+                            }}
+                        >
+                            Créditos: {disc.creditos}
+                        </div>
+                    </>
+                );
+
                 generatedNodes.push({
                     id: disc.codigo,
                     data: {
-                        label: disc.nome,
+                        label: labelContent,
                         codigo: disc.codigo,
-                        periodo: periodo.numero,
-                        initialY: 0, // Será preenchido no layout
+                        periodo: initialPeriodo,
+                        creditos: disc.creditos,
+                        isElective: isElective,
+                        isRestricted: isRestrictedElective, // NOVO
+                        initialY: 0,
                     },
                     position: { x: 0, y: 0 },
+                    targetPosition: "left",
+                    sourcePosition: "right",
                     style: {
-                        background: PERIOD_COLORS[periodo.numero] || "#eee",
-                        border: "1px solid #777",
+                        background: isElective
+                            ? isRestrictedElective
+                                ? RESTRICTED_ELECTIVE_COLOR
+                                : CONDITIONAL_ELECTIVE_COLOR
+                            : getPeriodColor(periodo.numero) || "#eee",
+                        border: isElective
+                            ? "1px dashed #777"
+                            : "1px solid #777",
                         borderRadius: "8px",
-                        padding: "8px",
+                        padding: "5px",
                         fontSize: "11px",
                         width: nodeWidth,
+                        height: nodeHeight,
                         color: "#333",
-                        textAlign: "center",
                         fontWeight: "500",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        textAlign: "center",
+                        whiteSpace: "normal",
+                        lineHeight: "1.2",
                     },
                 });
             }
         });
     });
 
-    // 2. Criar Arestas (Pré-requisitos)
-    filteredPeriods.forEach((periodo) => {
+    allPeriods.forEach((periodo) => {
         periodo.disciplinas.forEach((disc) => {
             if (disc.requisitos && disc.requisitos.length > 0) {
                 disc.requisitos.forEach((reqString) => {
-                    // Limpa a string de requisito (ex: "ICP131 (P)..." -> "ICP131")
                     const sourceId = reqString.split(" ")[0];
-
-                    // Só cria a aresta se o nó de origem existir no nosso grafo filtrado (1-7)
                     if (validNodeIds.has(sourceId)) {
                         const edgeId = `e${sourceId}-${disc.codigo}`;
-
                         const exists = generatedEdges.find(
                             (e) => e.id === edgeId
                         );
-
                         if (!exists) {
                             generatedEdges.push({
                                 id: edgeId,
                                 source: sourceId,
                                 target: disc.codigo,
+                                type: "straight",
                                 animated: false,
                                 style: {
                                     stroke: COLOR_IDLE_EDGE,
@@ -181,7 +539,6 @@ const generateCurriculumData = () => {
     return { nodes: generatedNodes, edges: generatedEdges };
 };
 
-/* TRAVESSIA DE LINHAGEM (Mantida igual) */
 const getLineageNodes = (node, nodes, edges) => {
     const lineageIds = new Set();
     lineageIds.add(node.id);
@@ -215,67 +572,588 @@ const getLineageNodes = (node, nodes, edges) => {
 function App() {
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+    const [toastMessage, setToastMessage] = useState(null);
 
-    // Inicialização
+    const [maxPeriod, setMaxPeriod] = useState(0);
+
+    const [reactFlowInstance, setReactFlowInstance] = useState(null);
+    const [hasFitView, setHasFitView] = useState(false);
+
+    const nodeTypes = useMemo(() => ({ header: HeaderNode }), []);
+
     useEffect(() => {
-        // Garantimos que a importação do JSON funcionou antes de gerar o grafo
         if (CURRICULUM_DATA && CURRICULUM_DATA.periodos) {
             const { nodes: initialNodes, edges: initialEdges } =
                 generateCurriculumData();
-            // Layout é recalculado após gerar os nós e arestas
             const { nodes: layoutedNodes, edges: layoutedEdges } =
                 getLayoutedElements(initialNodes, initialEdges);
 
-            setNodes(layoutedNodes);
-            setEdges(layoutedEdges);
+            let maxP = 0;
+            layoutedNodes.forEach((n) => {
+                if (!n.id.startsWith("header-") && n.data.periodo > maxP) {
+                    maxP = n.data.periodo;
+                }
+            });
+
+            const initialMax = maxP + 1;
+            setMaxPeriod(initialMax);
+
+            const initialTotals = calculateCreditsPerPeriod(layoutedNodes);
+            const headerNodes = getPeriodHeaders(initialTotals, initialMax);
+
+            const allNodes = [...layoutedNodes, ...headerNodes];
+            const visibleEdges = applyElectiveEdgeVisibility(
+                layoutedEdges,
+                allNodes
+            );
+
+            setNodes(allNodes);
+            setEdges(visibleEdges);
         }
     }, [setNodes, setEdges]);
+
+    useEffect(() => {
+        if (!reactFlowInstance || nodes.length === 0 || hasFitView) return;
+
+        // Considera apenas nós da grade (períodos 1..N), sem optativas e sem header de optativas
+        const gradeNodes = nodes.filter(
+            (n) =>
+                !n.data?.isElective &&
+                n.id !== "header-electives" &&
+                n.id !== "header-electives-restricted"
+        );
+
+        if (gradeNodes.length === 0) return;
+
+        reactFlowInstance.fitView({
+            nodes: gradeNodes,
+            padding: 0.9,
+        });
+
+        setHasFitView(true);
+    }, [reactFlowInstance, nodes, hasFitView]);
 
     const onConnect = useCallback(
         (params) => setEdges((eds) => addEdge(params, eds)),
         [setEdges]
     );
 
-    const onNodeDrag = useCallback((event, node) => {
-        // Mantém o nó na coluna correta, corrigindo o X ao arrastar
-        const fixedX = (node.data.periodo - 1) * COLUMN_WIDTH;
-        node.position.x = fixedX;
-    }, []);
+    const onNodeDragStop = useCallback(
+        (event, node) => {
+            if (node.id.startsWith("header-")) return;
 
-    // 2. Ao soltar: Verifica se está perto da posição inicial
-    const onNodeDragStop = useCallback((event, node) => {
-        const idealY = node.data.initialY;
-        const currentY = node.position.y;
-        
-        // Calcula a distância absoluta (para cima ou para baixo)
-        const distance = Math.abs(currentY - idealY);
+            const isElective = !!node.data?.isElective;
+            const wasInGrade = node.data?.periodo > 0;
 
-        // Se estiver perto o suficiente (< 50px), puxa de volta (Snap)
-        if (distance < SNAP_THRESHOLD) {
-            setNodes((nds) => 
-                nds.map((n) => {
+            // Se for eletiva que já está na grade, e for arrastada de volta
+            // para perto da posição original do painel -> remover da grade
+            if (
+                isElective &&
+                wasInGrade &&
+                typeof node.data.poolY === "number" &&
+                node.position.y >= node.data.poolY - ROW_HEIGHT / 2
+            ) {
+                let updatedNodesLocal = [];
+
+                setNodes((prevNodes) => {
+                    // atualiza somente a eletiva arrastada
+                    const nodesWithoutPeriodHeaders = prevNodes.filter(
+                        (n) => !n.id.startsWith("header-period-")
+                    );
+
+                    const updated = nodesWithoutPeriodHeaders.map((n) => {
+                        if (n.id === node.id) {
+                            return {
+                                ...n,
+                                data: {
+                                    ...n.data,
+                                    periodo: 0, // volta a ser "não alocada"
+                                },
+                                position: {
+                                    x: n.data.poolX, // volta para o painel
+                                    y: n.data.poolY,
+                                },
+                                style: {
+                                    ...n.style,
+                                    background: getElectiveColor(n.data),
+                                    border: "1px dashed #777",
+                                },
+                            };
+                        }
+                        return n;
+                    });
+
+                    // recalcula créditos por período
+                    const newTotals = calculateCreditsPerPeriod(updated);
+
+                    // recalcula maxPeriod
+                    const highestOccupied = Object.keys(newTotals).reduce(
+                        (max, p) => Math.max(max, parseInt(p, 10)),
+                        0
+                    );
+                    const newMaxPeriod = (highestOccupied || 1) + 1;
+                    if (newMaxPeriod !== maxPeriod) {
+                        setMaxPeriod(newMaxPeriod);
+                    }
+
+                    // recria apenas os headers de período, mantendo o header das eletivas
+                    const periodHeaders = getPeriodHeaders(
+                        newTotals,
+                        newMaxPeriod
+                    );
+                    const electiveHeaders = prevNodes.filter(
+                        (n) =>
+                            n.id === "header-electives" ||
+                            n.id === "header-electives-restricted"
+                    );
+
+                    const nextNodes = [
+                        ...updated,
+                        ...periodHeaders,
+                        ...electiveHeaders,
+                    ];
+
+                    updatedNodesLocal = nextNodes;
+                    return nextNodes;
+                });
+
+                setEdges((prevEdges) =>
+                    applyElectiveEdgeVisibility(prevEdges, updatedNodesLocal)
+                );
+
+                // Já tratou o drag dessa eletiva, não segue para lógica de mover período
+                return;
+            }
+
+            const estimatedPeriod =
+                Math.floor(
+                    (node.position.x + COLUMN_WIDTH / 2) / COLUMN_WIDTH
+                ) + 1;
+            let newPeriod = Math.max(1, estimatedPeriod);
+
+            // 1. Validação de Pré-requisitos e Dependentes
+            const parents = getIncomers(node, nodes, edges);
+            const children = getOutgoers(node, nodes, edges);
+            let isValid = true;
+            let errorMsg = "";
+
+            for (const parent of parents) {
+                const parentName =
+                    parent.data.label?.props?.children?.[0] ||
+                    parent.data.label;
+
+                const parentPeriod = parent.data.periodo || 0;
+
+                // 1º: pré-requisito não está na grade
+                if (parentPeriod <= 0) {
+                    isValid = false;
+                    errorMsg = `O pré-requisito "${parentName}" não foi adicionado na grade`;
+                    break;
+                }
+
+                // 2º: pré-requisito no mesmo período ou em período maior
+                if (parentPeriod >= newPeriod) {
+                    isValid = false;
+                    errorMsg = `Movimento inválido! O pré-requisito "${parentName}" está no ${parentPeriod}º período.`;
+                    break;
+                }
+            }
+
+            if (isValid) {
+                for (const child of children) {
+                    // se o filho ainda não está em nenhum período, ignora
+                    if (!child.data.periodo || child.data.periodo <= 0)
+                        continue;
+
+                    if (child.data.periodo <= newPeriod) {
+                        isValid = false;
+                        errorMsg = `Movimento inválido! A matéria dependente está no ${child.data.periodo}º período.`;
+                        break;
+                    }
+                }
+            }
+
+            // 2. Validação de Créditos (Limite 32)
+            if (isValid) {
+                const nodesInTargetPeriod = nodes.filter(
+                    (n) =>
+                        !n.id.startsWith("header-") &&
+                        n.id !== node.id &&
+                        n.data.periodo === newPeriod
+                );
+
+                const currentSum = nodesInTargetPeriod.reduce(
+                    (acc, n) => acc + (n.data.creditos || 0),
+                    0
+                );
+
+                const newTotal = currentSum + (node.data.creditos || 0);
+
+                if (newTotal > MAX_CREDITS) {
+                    isValid = false;
+                    errorMsg = `Limite excedido! O ${newPeriod}º período ficaria com ${newTotal} créditos (Máx: ${MAX_CREDITS}).`;
+                }
+            }
+
+            if (!isValid) {
+                setToastMessage(errorMsg);
+                setTimeout(() => setToastMessage(null), 4000);
+
+                setNodes((nds) =>
+                    nds.map((n) => {
+                        if (n.id === node.id) {
+                            // Se não tinha período (eletiva no pool),
+                            // apenas volta para a posição vertical original do pool
+                            if (!n.data.periodo || n.data.periodo <= 0) {
+                                return {
+                                    ...n,
+                                    position: {
+                                        x: n.position.x,
+                                        y: n.data.initialY,
+                                    },
+                                };
+                            }
+
+                            const originalX =
+                                (n.data.periodo - 1) * COLUMN_WIDTH;
+                            return {
+                                ...n,
+                                position: { x: originalX, y: n.data.initialY },
+                            };
+                        }
+                        return n;
+                    })
+                );
+                return;
+            }
+
+            let updatedNodes = [];
+
+            // 3. SE VÁLIDO: Executa movimento e atualiza cabeçalhos
+            setNodes((prevNodes) => {
+                const nodesWithNewData = prevNodes.map((n) => {
                     if (n.id === node.id) {
+                        const isElective = n.data.isElective;
                         return {
                             ...n,
-                            position: {
-                                x: n.position.x, // Mantém o X (que já está travado)
-                                y: idealY        // Força o Y original
-                            }
+                            data: { ...n.data, periodo: newPeriod },
+                            position: node.position,
+                            style: {
+                                ...n.style,
+                                background: isElective
+                                    ? getElectiveColor(n.data)
+                                    : getPeriodColor(newPeriod),
+                                border: "1px solid #777",
+                            },
                         };
                     }
                     return n;
-                })
+                });
+
+                let highestOccupiedPeriod = 0;
+                nodesWithNewData.forEach((n) => {
+                    if (!n.id.startsWith("header-") && n.data.periodo > 0) {
+                        if (n.data.periodo > highestOccupiedPeriod) {
+                            highestOccupiedPeriod = n.data.periodo;
+                        }
+                    }
+                });
+
+                const newMaxPeriod = highestOccupiedPeriod + 1;
+
+                if (newMaxPeriod !== maxPeriod) {
+                    setMaxPeriod(newMaxPeriod);
+                }
+
+                const newTotals = calculateCreditsPerPeriod(nodesWithNewData);
+
+                const nodesByPeriod = {};
+                const subjectNodes = [];
+                const electiveHeaderNodes = [];
+
+                nodesWithNewData.forEach((n) => {
+                    if (
+                        n.id === "header-electives" ||
+                        n.id === "header-electives-restricted"
+                    ) {
+                        electiveHeaderNodes.push(n);
+                        return;
+                    }
+                    if (!n.id.startsWith("header-")) subjectNodes.push(n);
+                });
+
+                subjectNodes.forEach((n) => {
+                    const p = n.data.periodo;
+                    if (!nodesByPeriod[p]) nodesByPeriod[p] = [];
+                    nodesByPeriod[p].push(n);
+                });
+
+                const processedSubjects = subjectNodes.map((n) => {
+                    const p = n.data.periodo;
+
+                    // se ainda está "solta" (periodo 0), não participa da grade
+                    if (!p || p <= 0) return n;
+
+                    const columnNodes = nodesByPeriod[p].filter(
+                        (x) => x.data.periodo === p && x.data.periodo > 0
+                    );
+
+                    columnNodes.sort((a, b) => a.position.y - b.position.y);
+                    const index = columnNodes.findIndex((x) => x.id === n.id);
+
+                    const newX = (p - 1) * COLUMN_WIDTH;
+                    const newY = index * ROW_HEIGHT;
+
+                    return {
+                        ...n,
+                        position: { x: newX, y: newY },
+                        data: { ...n.data, initialY: newY },
+                    };
+                });
+
+                const updatedHeaders = getPeriodHeaders(
+                    newTotals,
+                    newMaxPeriod
+                );
+                const nextNodes = [
+                    ...processedSubjects,
+                    ...updatedHeaders,
+                    ...electiveHeaderNodes,
+                ];
+
+                updatedNodes = nextNodes;
+                return nextNodes;
+            });
+
+            setEdges((prevEdges) =>
+                applyElectiveEdgeVisibility(prevEdges, updatedNodes)
             );
-        }
-        // Se estiver longe (>= 50px), não faz nada (deixa onde o usuário soltou)
-    }, [setNodes]);
+        },
+        [nodes, edges, setNodes, setEdges, maxPeriod]
+    );
 
     const onNodeClick = useCallback(
         (event, clickedNode) => {
+            if (clickedNode.id.startsWith("header-")) return;
+
+            // Caso especial: eletiva no pool, ao clicar adiciona na grade
+            if (
+                clickedNode.data?.isElective &&
+                (!clickedNode.data.periodo || clickedNode.data.periodo <= 0)
+            ) {
+                // 1. Acha o último período que tem alguma matéria na grade
+                const lastOccupiedPeriod =
+                    nodes.reduce((max, n) => {
+                        if (n.id.startsWith("header-")) return max;
+                        const p = parseInt(n.data?.periodo || 0, 10);
+                        if (p > 0 && p > max) return p;
+                        return max;
+                    }, 0) || 1;
+
+                // 2. Busca os Pais (Pré-requisitos)
+                const parents = getIncomers(clickedNode, nodes, edges);
+
+                // 3. Calcula o período alvo com segurança de tipos
+                // Mapeia todos os pré-requisitos para seus períodos (+1) e pega o maior
+                const maxPrereqTarget = parents.reduce((max, parent) => {
+                    const pVal = parseInt(parent.data?.periodo || 0, 10);
+                    // O alvo deve ser (período do pai + 1)
+                    return Math.max(max, pVal + 1);
+                }, 0);
+
+                // O alvo final é o maior entre (Fim da Grade) e (Pré-requisito + 1)
+                const targetPeriod = Math.max(
+                    lastOccupiedPeriod,
+                    maxPrereqTarget
+                );
+
+                // --- INÍCIO DA VALIDAÇÃO ---
+                const children = getOutgoers(clickedNode, nodes, edges);
+                let isValid = true;
+                let errorMsg = "";
+
+                for (const parent of parents) {
+                    const parentName =
+                        parent.data.label?.props?.children?.[0] ||
+                        parent.data.label;
+
+                    const parentPeriod = parseInt(
+                        parent.data?.periodo || 0,
+                        10
+                    );
+
+                    // 1º: Valida se o pré-requisito está na grade (período > 0)
+                    if (parentPeriod <= 0) {
+                        isValid = false;
+                        errorMsg = `O pré-requisito "${parentName}" não foi adicionado na grade`;
+                        break;
+                    }
+
+                    // 2º: Valida a ordem (Parent < Target)
+                    if (parentPeriod >= targetPeriod) {
+                        isValid = false;
+                        errorMsg = `Movimento inválido! O pré-requisito "${parentName}" está no ${parentPeriod}º período. (Tentando ir para ${targetPeriod})`;
+                        break;
+                    }
+                }
+
+                if (isValid) {
+                    for (const child of children) {
+                        const childPeriod = parseInt(
+                            child.data?.periodo || 0,
+                            10
+                        );
+
+                        // se o filho ainda não está em nenhum período, ignora
+                        if (childPeriod <= 0) continue;
+
+                        if (childPeriod <= targetPeriod) {
+                            isValid = false;
+                            errorMsg = `Movimento inválido! A matéria dependente está no ${childPeriod}º período.`;
+                            break;
+                        }
+                    }
+                }
+
+                if (isValid) {
+                    const nodesInTargetPeriod = nodes.filter(
+                        (n) =>
+                            !n.id.startsWith("header-") &&
+                            n.id !== clickedNode.id &&
+                            parseInt(n.data.periodo || 0, 10) === targetPeriod
+                    );
+
+                    const currentSum = nodesInTargetPeriod.reduce(
+                        (acc, n) => acc + (n.data.creditos || 0),
+                        0
+                    );
+
+                    const newTotal =
+                        currentSum + (clickedNode.data.creditos || 0);
+
+                    if (newTotal > MAX_CREDITS) {
+                        isValid = false;
+                        errorMsg = `Limite excedido! O ${targetPeriod}º período ficaria com ${newTotal} créditos (Máx: ${MAX_CREDITS}).`;
+                    }
+                }
+
+                if (!isValid) {
+                    setToastMessage(errorMsg);
+                    setTimeout(() => setToastMessage(null), 4000);
+                    return;
+                }
+
+                // --- EXECUÇÃO DO MOVIMENTO ---
+                let updatedNodes = [];
+
+                setNodes((prevNodes) => {
+                    const nodesWithNewData = prevNodes.map((n) => {
+                        if (n.id === clickedNode.id) {
+                            return {
+                                ...n,
+                                data: {
+                                    ...n.data,
+                                    periodo: targetPeriod,
+                                },
+                                style: {
+                                    ...n.style,
+                                    background: getElectiveColor(n.data),
+                                    border: "1px solid #777",
+                                },
+                            };
+                        }
+                        return n;
+                    });
+
+                    let highest = 0;
+                    nodesWithNewData.forEach((n) => {
+                        if (!n.id.startsWith("header-")) {
+                            const p = parseInt(n.data.periodo || 0, 10);
+                            if (p > 0 && p > highest) {
+                                highest = p;
+                            }
+                        }
+                    });
+
+                    const newMaxPeriod = highest + 1;
+                    if (newMaxPeriod !== maxPeriod) {
+                        setMaxPeriod(newMaxPeriod);
+                    }
+
+                    const newTotals =
+                        calculateCreditsPerPeriod(nodesWithNewData);
+                    const nodesByPeriod = {};
+                    const subjectNodes = [];
+                    const electiveHeaderNodes = [];
+
+                    nodesWithNewData.forEach((n) => {
+                        if (n.id === "header-electives") {
+                            electiveHeaderNodes.push(n);
+                            return;
+                        }
+                        if (!n.id.startsWith("header-")) subjectNodes.push(n);
+                    });
+
+                    subjectNodes.forEach((n) => {
+                        const p = parseInt(n.data.periodo || 0, 10);
+                        if (!nodesByPeriod[p]) nodesByPeriod[p] = [];
+                        nodesByPeriod[p].push(n);
+                    });
+
+                    const processedSubjects = subjectNodes.map((n) => {
+                        const p = parseInt(n.data.periodo || 0, 10);
+
+                        if (!p || p <= 0) return n;
+
+                        const columnNodes = nodesByPeriod[p].filter(
+                            (x) =>
+                                parseInt(x.data.periodo || 0, 10) === p &&
+                                parseInt(x.data.periodo || 0, 10) > 0
+                        );
+
+                        columnNodes.sort((a, b) => a.position.y - b.position.y);
+                        const index = columnNodes.findIndex(
+                            (x) => x.id === n.id
+                        );
+
+                        const newX = (p - 1) * COLUMN_WIDTH;
+                        const newY = index * ROW_HEIGHT;
+
+                        return {
+                            ...n,
+                            position: { x: newX, y: newY },
+                            data: { ...n.data, initialY: newY },
+                        };
+                    });
+
+                    const updatedHeaders = getPeriodHeaders(
+                        newTotals,
+                        newMaxPeriod
+                    );
+                    const nextNodes = [
+                        ...processedSubjects,
+                        ...updatedHeaders,
+                        ...electiveHeaderNodes,
+                    ];
+
+                    updatedNodes = nextNodes;
+                    return nextNodes;
+                });
+
+                setEdges((prevEdges) =>
+                    applyElectiveEdgeVisibility(prevEdges, updatedNodes)
+                );
+
+                return;
+            }
+
+            // Comportamento normal: highlight de pré-requisitos/descendentes
             const lineageIds = getLineageNodes(clickedNode, nodes, edges);
 
             setNodes((nds) =>
                 nds.map((n) => {
+                    if (n.id.startsWith("header-")) return n;
+
                     const isRelated = lineageIds.has(n.id);
                     return {
                         ...n,
@@ -296,6 +1174,37 @@ function App() {
                 eds.map((e) => {
                     const isRelated =
                         lineageIds.has(e.source) && lineageIds.has(e.target);
+
+                    const sourceNode = nodes.find((n) => n.id === e.source);
+                    const targetNode = nodes.find((n) => n.id === e.target);
+                    const sourcePeriod = parseInt(
+                        sourceNode?.data?.periodo || 0,
+                        10
+                    );
+                    const targetPeriod = parseInt(
+                        targetNode?.data?.periodo || 0,
+                        10
+                    );
+                    const involvesUnassigned =
+                        sourcePeriod <= 0 || targetPeriod <= 0;
+
+                    if (involvesUnassigned) {
+                        return {
+                            ...e,
+                            animated: false,
+                            style: {
+                                ...e.style,
+                                stroke: COLOR_IDLE_EDGE,
+                                strokeWidth: 1,
+                                opacity: 0,
+                            },
+                            markerEnd: {
+                                type: MarkerType.ArrowClosed,
+                                color: COLOR_IDLE_EDGE,
+                            },
+                        };
+                    }
+
                     return {
                         ...e,
                         animated: isRelated,
@@ -317,54 +1226,70 @@ function App() {
                 })
             );
         },
-        [nodes, edges, setNodes, setEdges]
+        [nodes, edges, setNodes, setEdges, maxPeriod]
     );
 
     const onPaneClick = useCallback(() => {
-        // Reseta o estado
         setNodes((nds) =>
-            nds.map((n) => ({
-                ...n,
-                style: {
-                    ...n.style,
-                    opacity: 1,
-                    border: "1px solid #777",
-                    fontWeight: "500",
-                },
-            }))
+            nds.map((n) => {
+                if (n.id.startsWith("header-")) return n;
+                return {
+                    ...n,
+                    style: {
+                        ...n.style,
+                        opacity: 1,
+                        border: "1px solid #777",
+                        fontWeight: "500",
+                    },
+                };
+            })
         );
 
         setEdges((eds) =>
-            eds.map((e) => ({
-                ...e,
-                animated: false,
-                style: {
-                    ...e.style,
-                    stroke: COLOR_IDLE_EDGE,
-                    strokeWidth: 1,
-                    opacity: 1,
-                },
-                markerEnd: {
-                    type: MarkerType.ArrowClosed,
-                    color: COLOR_IDLE_EDGE,
-                },
-            }))
+            eds.map((e) => {
+                const sourceNode = nodes.find((n) => n.id === e.source);
+                const targetNode = nodes.find((n) => n.id === e.target);
+                const sourcePeriod = sourceNode?.data?.periodo ?? 0;
+                const targetPeriod = targetNode?.data?.periodo ?? 0;
+                const involvesUnassigned =
+                    sourcePeriod <= 0 || targetPeriod <= 0;
+
+                return {
+                    ...e,
+                    animated: false,
+                    style: {
+                        ...e.style,
+                        stroke: COLOR_IDLE_EDGE,
+                        strokeWidth: 1,
+                        opacity: involvesUnassigned ? 0 : 1,
+                    },
+                    markerEnd: {
+                        type: MarkerType.ArrowClosed,
+                        color: COLOR_IDLE_EDGE,
+                    },
+                };
+            })
         );
-    }, [setNodes, setEdges]);
+    }, [nodes, setNodes, setEdges]);
 
     return (
         <div style={{ width: "100vw", height: "100vh", background: "#f0f2f5" }}>
+            <NotificationToast
+                message={toastMessage}
+                onClose={() => setToastMessage(null)}
+            />
+
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
+                nodeTypes={nodeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
-                onNodeDrag={onNodeDrag}
                 onNodeDragStop={onNodeDragStop}
                 onNodeClick={onNodeClick}
                 onPaneClick={onPaneClick}
-                fitView
+                onInit={setReactFlowInstance}
                 attributionPosition="bottom-right"
             >
                 <Controls />
