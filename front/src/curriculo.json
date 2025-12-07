@@ -1,71 +1,47 @@
 {
     "periodos": [
-         {
+        {
             "numero": 1,
             "disciplinas": [
                 {
                     "codigo": "ICP131",
                     "nome": "Programação de Computadores I",
-                    "ch": {
-                        "teorica": 45,
-                        "pratica": 15,
-                        "extensao": 0
-                    },
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
                     "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "ICP132",
                     "nome": "Processos de Software",
-                    "ch": {
-                        "teorica": 45,
-                        "pratica": 15,
-                        "extensao": 0
-                    },
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
                     "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "ICP133",
                     "nome": "Fund de Sistemas de Computação",
-                    "ch": {
-                        "teorica": 60,
-                        "pratica": 0,
-                        "extensao": 0
-                    },
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
                     "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "ICP134",
                     "nome": "Números Inteiros Criptografia",
-                    "ch": {
-                        "teorica": 60,
-                        "pratica": 0,
-                        "extensao": 0
-                    },
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
                     "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "ICP135",
                     "nome": "Projeto de Carreira",
-                    "ch": {
-                        "teorica": 60,
-                        "pratica": 0,
-                        "extensao": 0
-                    },
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
                     "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "ICP136",
                     "nome": "Introd Pensamento Dedutivo",
-                    "ch": {
-                        "teorica": 60,
-                        "pratica": 0,
-                        "extensao": 0
-                    },
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
                     "creditos": 4.0,
                     "requisitos": []
                 }
@@ -77,12 +53,8 @@
                 {
                     "codigo": "ICP141",
                     "nome": "Programação de Computadores II",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 45,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 45, "extensao": 15 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP131 (P)ICP131 = ICP037 + ICP121ICP131 = ICP037 + MAB124ICP131 = ICP037 + ICP124ICP131 = ICP037 + MAB114ICP131 = ICP037 + MAB121ICP131 = ICP037 + MAW112ICP131 = ICP037 + ICP114"
                     ]
@@ -90,23 +62,15 @@
                 {
                     "codigo": "ICP142",
                     "nome": "Organização de Dados I",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 15,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 15, "extensao": 15 },
+                    "creditos": 2.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "ICP143",
                     "nome": "Projeto Prático",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 15,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 15, "extensao": 15 },
+                    "creditos": 2.0,
                     "requisitos": [
                         "ICP131 (P)",
                         "ICP132 (P)",
@@ -116,38 +80,22 @@
                 {
                     "codigo": "ICP144",
                     "nome": "Matemática Discreta",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
-                    "requisitos": [
-                        "ICP134 (P)ICP134 = MAB624ICP134 = ICP624"
-                    ]
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP134 (P)ICP134 = MAB624ICP134 = ICP624"]
                 },
                 {
                     "codigo": "ICP145",
                     "nome": "Habilidades Sociais p Trabalho",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 30,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
-                    "requisitos": [
-                        "ICP135 (P)ICP135 = ICP007"
-                    ]
+                    "ch": { "teorica": null, "pratica": 30, "extensao": 0 },
+                    "creditos": 2.0,
+                    "requisitos": ["ICP135 (P)ICP135 = ICP007"]
                 },
                 {
                     "codigo": "MAE111",
                     "nome": "Cálculo Infinitesimal I",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 75,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 75, "extensao": 15 },
+                    "creditos": 6.0,
                     "requisitos": []
                 }
             ]
@@ -158,39 +106,22 @@
                 {
                     "codigo": "ICP115",
                     "nome": "Álgebra Linear Algorítmica",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 30
-                    },
-                    "creditos": 0,
-                    "requisitos": [
-                        "ICP136 (P)",
-                        "ICP144 (P)"
-                    ]
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 30 },
+                    "creditos": 6.0,
+                    "requisitos": ["ICP136 (P)", "ICP144 (P)"]
                 },
                 {
                     "codigo": "ICP116",
                     "nome": "Estruturas de Dados",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
-                    "requisitos": [
-                        "ICP141 (P)"
-                    ]
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP141 (P)"]
                 },
                 {
                     "codigo": "ICP237",
                     "nome": "Introd à Modelagem de Sistemas",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 45,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 45, "extensao": 15 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP132 (P)",
                         "ICP141 (P)ICP141 = CMT012 + ICP121ICP141 = CMT012 + MAB121ICP132 = MAB112ICP132 = ICP112ICP141 = MAB120ICP141 = ICP120"
@@ -199,12 +130,8 @@
                 {
                     "codigo": "ICP238",
                     "nome": "Introd à Computação Numérica",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 15,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 15, "extensao": 15 },
+                    "creditos": 2.0,
                     "requisitos": [
                         "ICP131 (P)",
                         "ICP133 (P)",
@@ -214,12 +141,8 @@
                 {
                     "codigo": "ICP239",
                     "nome": "Programação Orientada a Objeto",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 45,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 45, "extensao": 15 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP141 (P)ICP141 = CMT012 + MAB121ICP141 = CMT012 + ICP121ICP141 = MAB120ICP141 = ICP120"
                     ]
@@ -227,15 +150,9 @@
                 {
                     "codigo": "MAE992",
                     "nome": "Cálculo Integ e Diferencial II",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 45,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
-                    "requisitos": [
-                        "MAE111 (P)MAE111 = MAC118"
-                    ]
+                    "ch": { "teorica": null, "pratica": 45, "extensao": 15 },
+                    "creditos": 4.0,
+                    "requisitos": ["MAE111 (P)MAE111 = MAC118"]
                 }
             ]
         },
@@ -245,12 +162,8 @@
                 {
                     "codigo": "ICP246",
                     "nome": "Arquitet Comput e Sist Operac",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP133 (P)",
                         "ICP141 (P)ICP141 = CMT012 + MAB121ICP133 = ICP111ICP133 = MAB111ICP141 = ICP120ICP141 = MAB120ICP141 = CMT012 + ICP121"
@@ -259,12 +172,8 @@
                 {
                     "codigo": "ICP248",
                     "nome": "Comput Científ e Análise Dados",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 45,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 45, "extensao": 15 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP115 (P)",
                         "ICP238 (P)",
@@ -274,38 +183,22 @@
                 {
                     "codigo": "ICP249",
                     "nome": "Tecnologia e Sociedade",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
-                    "requisitos": [
-                        "ICP145 (P)ICP145 = ICP008"
-                    ]
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP145 (P)ICP145 = ICP008"]
                 },
                 {
                     "codigo": "ICP489",
                     "nome": "Banco de Dados I",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 45,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
-                    "requisitos": [
-                        "ICP116 (P)ICP116 = MAB116"
-                    ]
+                    "ch": { "teorica": null, "pratica": 45, "extensao": 15 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP116 (P)ICP116 = MAB116"]
                 },
                 {
                     "codigo": "MAD243",
                     "nome": "Estatística e Probabilidade",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "MAE121 (P)",
                         "MAE121 = MAE992",
@@ -320,12 +213,8 @@
                 {
                     "codigo": "ICP123",
                     "nome": "Linguagens Formais",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP141 (P)",
                         "ICP144 (P)ICP141 = ICP120ICP141 = CMT012 + ICP121ICP144 = MAB352ICP144 = ICP352ICP141 = MAB120ICP141 = CMT012 + MAB121"
@@ -334,12 +223,8 @@
                 {
                     "codigo": "ICP350",
                     "nome": "Modelagem e Aval de Desempenho",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP115 (P)",
                         "MAD243 (P)MAD243 = MAD201ICP115 = MAB115"
@@ -348,12 +233,8 @@
                 {
                     "codigo": "ICP351",
                     "nome": "Model Matemát e Computacional",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 45,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 45, "extensao": 15 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP115 (P)",
                         "MAE992 (P)MAE992 = MAE121ICP115 = MAB115MAE992 = MAC128"
@@ -362,12 +243,8 @@
                 {
                     "codigo": "ICP353",
                     "nome": "Computadores e Programação",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP246 (P)ICP246 = ICP355 + MAB366ICP246 = ICP366 + MAB355ICP246 = MAB355 + MAB366ICP246 = ICP355 + ICP366"
                     ]
@@ -375,12 +252,8 @@
                 {
                     "codigo": "ICP368",
                     "nome": "Algoritmos e Grafos",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP116 (P)",
                         "ICP144 (P)ICP116 = MAB116ICP144 = MAB352ICP144 = ICP352"
@@ -394,12 +267,8 @@
                 {
                     "codigo": "ICP361",
                     "nome": "Programação Concorrente",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 45,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 45, "extensao": 15 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP239 (P)",
                         "ICP353 (P)ICP239 = ICP240ICP353 = MAB353ICP239 = MAB240"
@@ -408,12 +277,8 @@
                 {
                     "codigo": "ICP362",
                     "nome": "Redes de Computadores I",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP131 (P)",
                         "ICP133 (P)",
@@ -423,12 +288,8 @@
                 {
                     "codigo": "ICP363",
                     "nome": "Introd Aprendizado de Máquina",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP248 (P)",
                         "MAD243 (P)MAD243 = MAD201ICP248 = MAB231ICP248 = ICP231ICP248 = ICP230ICP248 = MAB230"
@@ -437,12 +298,8 @@
                 {
                     "codigo": "ICP365",
                     "nome": "Otimização",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 45,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 45, "extensao": 15 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP115 (P)",
                         "ICP238 (P)ICP115 = MAB115ICP238 = ICP231ICP238 = MAB230ICP238 = ICP230ICP238 = MAB231"
@@ -451,15 +308,9 @@
                 {
                     "codigo": "ICP370",
                     "nome": "Lógica e Computabilidade",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
-                    "requisitos": [
-                        "ICP123 (P)ICP123 = MAB123"
-                    ]
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP123 (P)ICP123 = MAB123"]
                 }
             ]
         },
@@ -469,25 +320,15 @@
                 {
                     "codigo": "ICP472",
                     "nome": "Metodologia da Pesquisa",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
-                    "requisitos": [
-                        "ICP249 (P)ICP249 = MAB354ICP249 = ICP354"
-                    ]
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP249 (P)ICP249 = MAB354ICP249 = ICP354"]
                 },
                 {
                     "codigo": "ICP473",
                     "nome": "Segurança da Informação",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": [
                         "ICP353 (P)",
                         "ICP362 (P)ICP362 = ICP510ICP353 = MAB353ICP362 = MAB510"
@@ -501,37 +342,9 @@
                 {
                     "codigo": "ICPK01",
                     "nome": "Trab Conclusão de Curso Bcc",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 90,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
-                    "requisitos": [
-                        "ICP472 (P)"
-                    ]
-                },
-                {
-                    "codigo": "Atividades Academicas de Livre Escolha",
-                    "nome": "8.0",
-                    "ch": {
-                        "teorica": 120,
-                        "pratica": 0,
-                        "extensao": 0
-                    },
-                    "creditos": null,
-                    "requisitos": []
-                },
-                {
-                    "codigo": "Atividades Academicas Optativas",
-                    "nome": "8.0",
-                    "ch": {
-                        "teorica": 120,
-                        "pratica": 0,
-                        "extensao": 0
-                    },
-                    "creditos": null,
-                    "requisitos": []
+                    "ch": { "teorica": null, "pratica": 90, "extensao": 0 },
+                    "creditos": 6.0,
+                    "requisitos": ["ICP472 (P)"]
                 }
             ]
         },
@@ -539,15 +352,832 @@
             "numero": 9,
             "disciplinas": [
                 {
-                    "codigo": "Atividades Academicas Optativas",
-                    "nome": "16.0",
-                    "ch": {
-                        "teorica": 240,
-                        "pratica": 0,
-                        "extensao": 0
-                    },
-                    "creditos": null,
+                    "codigo": "FIM230",
+                    "nome": "Física III - A",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "FIT112 (P), MAC128 (P)",
+                        "FIT112 = FIS112",
+                        "FIT112 = FIW121",
+                        "MAC128 = MAW116 + MAW231",
+                        "FIT112 = FIT123",
+                        "FIT112 = EEW110",
+                        "FIT112 = FIW125",
+                        "MAC128 = MAE992",
+                        "MAC128 = MAC123",
+                        "FIT112 = FIT111",
+                        "MAC128 = MAC124",
+                        "FIT112 = FIT113",
+                        "MAC128 = MAE121"
+                    ]
+                },
+                {
+                    "codigo": "FIM240",
+                    "nome": "Física IV - A",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "FIM230 (P)",
+                        "FIM230 = FIM231",
+                        "FIM230 = FIN231",
+                        "FIM230 = FIW241",
+                        "FIM230 = FIW230"
+                    ]
+                },
+                {
+                    "codigo": "FIT112",
+                    "nome": "Física I - A",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
+                },
+                {
+                    "codigo": "FIT122",
+                    "nome": "Física II - A",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "FIT112 (P), MAC118 (P)",
+                        "FIT112 = FIT123",
+                        "MAC118 = MAC106 + MAC113",
+                        "FIT112 = FIT111",
+                        "MAC118 = MAC113",
+                        "MAC118 = MAE111",
+                        "FIT112 = FIT113",
+                        "MAC118 = MAC114",
+                        "FIT112 = EEW110",
+                        "FIT112 = FIS112"
+                    ]
+                },
+                {
+                    "codigo": "ICP005",
+                    "nome": "Ética em Computação",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": []
+                },
+                {
+                    "codigo": "ICP006",
+                    "nome": "Internet das Coisas",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP246 (P), ICP362 (P)",
+                        "ICP362 = MAB510",
+                        "ICP246 = ICP355 + MAB366",
+                        "ICP246 = MAB355 + MAB366",
+                        "ICP246 = ICP355 + ICP366",
+                        "ICP362 = ICP510",
+                        "ICP246 = ICP366 + MAB355"
+                    ]
+                },
+                {
+                    "codigo": "ICP009",
+                    "nome": "Computação Social",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP142 (P)",
+                        "ICP142 = MAB113",
+                        "ICP142 = ICP113"
+                    ]
+                },
+                {
+                    "codigo": "ICP010",
+                    "nome": "Web Semântica",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP489 (P)", "ICP489 = MAB489"]
+                },
+                {
+                    "codigo": "ICP011",
+                    "nome": "Tóp Esp em Ciência de Dados I",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP363 (P), ICP489 (P)",
+                        "ICP363 = MAB004",
+                        "ICP363 = ICP004",
+                        "ICP489 = MAB489"
+                    ]
+                },
+                {
+                    "codigo": "ICP012",
+                    "nome": "Tóp Esp em Ciência de Dados II",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP363 (P), ICP489 (P)",
+                        "ICP363 = MAB004",
+                        "ICP363 = ICP004",
+                        "ICP489 = MAB489"
+                    ]
+                },
+                {
+                    "codigo": "ICP013",
+                    "nome": "Séries e Transformadas Comput",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP115 (P), MAE992 (P)",
+                        "MAE992 = MAE121",
+                        "ICP115 = MAB115",
+                        "MAE992 = MAC128"
+                    ]
+                },
+                {
+                    "codigo": "ICP014",
+                    "nome": "Comput Científ Equaç Dif Ordin",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP248 (P), ICP351 (P)",
+                        "ICP248 = ICP230",
+                        "ICP248 = MAB231",
+                        "ICP248 = MAB230",
+                        "ICP248 = ICP231"
+                    ]
+                },
+                {
+                    "codigo": "ICP015",
+                    "nome": "Comput Científ Equaç Dif Parc",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP014 (P)"]
+                },
+                {
+                    "codigo": "ICP016",
+                    "nome": "Introd Métod Elementos Finitos",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP014 (P)"]
+                },
+                {
+                    "codigo": "ICP017",
+                    "nome": "Otimização Linear",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP365 (P)",
+                        "ICP365 = MAB232",
+                        "ICP365 = ICP232"
+                    ]
+                },
+                {
+                    "codigo": "ICP018",
+                    "nome": "Otimização Não Linear",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP365 (P)",
+                        "ICP365 = ICP232",
+                        "ICP365 = MAB232"
+                    ]
+                },
+                {
+                    "codigo": "ICP019",
+                    "nome": "Álgebra Linear Aplicada",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP248 (P)",
+                        "ICP248 = ICP231",
+                        "ICP248 = MAB231",
+                        "ICP248 = MAB230",
+                        "ICP248 = ICP230"
+                    ]
+                },
+                {
+                    "codigo": "ICP020",
+                    "nome": "Engenharia de Software",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP237 (P)",
+                        "ICP237 = MAB535",
+                        "ICP237 = ICP535"
+                    ]
+                },
+                {
+                    "codigo": "ICP021",
+                    "nome": "Tóp Esp em Engenharia Dados I",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP489 (P)", "ICP489 = MAB489"]
+                },
+                {
+                    "codigo": "ICP022",
+                    "nome": "Tóp Esp em Engenharia Dados II",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP489 (P)", "ICP489 = MAB489"]
+                },
+                {
+                    "codigo": "ICP023",
+                    "nome": "Gestão de Projetos",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP237 (P)",
+                        "ICP237 = MAB535",
+                        "ICP237 = ICP535"
+                    ]
+                },
+                {
+                    "codigo": "ICP024",
+                    "nome": "Análise e Projeto de Sistemas",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP237 (P)",
+                        "ICP237 = MAB535",
+                        "ICP237 = ICP535"
+                    ]
+                },
+                {
+                    "codigo": "ICP025",
+                    "nome": "Computação em Nuvem",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP246 (P), ICP362 (P)",
+                        "ICP362 = MAB510",
+                        "ICP362 = ICP510",
+                        "ICP246 = ICP355 + MAB366",
+                        "ICP246 = MAB355 + MAB366",
+                        "ICP246 = ICP366 + MAB355",
+                        "ICP246 = ICP355 + ICP366"
+                    ]
+                },
+                {
+                    "codigo": "ICP026",
+                    "nome": "Redes de Computadores II",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP362 (P)",
+                        "ICP362 = ICP510",
+                        "ICP362 = MAB510"
+                    ]
+                },
+                {
+                    "codigo": "ICP027",
+                    "nome": "Criptografia",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP115 (P), ICP131 (P), ICP134 (P)",
+                        "ICP131 = ICP120",
+                        "ICP134 = ICP624",
+                        "ICP115 = MAB115",
+                        "ICP134 = MAB624",
+                        "ICP131 = CMT012 + MAB121",
+                        "ICP131 = CMT012 + ICP121",
+                        "ICP131 = MAB120"
+                    ]
+                },
+                {
+                    "codigo": "ICP028",
+                    "nome": "Tóp Esp em Arquitetura Comput",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP246 (P)",
+                        "ICP246 = ICP355 + ICP366",
+                        "ICP246 = ICP366 + MAB355",
+                        "ICP246 = ICP355 + MAB366",
+                        "ICP246 = MAB355 + MAB366"
+                    ]
+                },
+                {
+                    "codigo": "ICP029",
+                    "nome": "Empreendedorismo e Inovação",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP145 (P)", "ICP145 = ICP008"]
+                },
+                {
+                    "codigo": "ICP030",
+                    "nome": "Governança e Gestão de Dados",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP489 (P)", "ICP489 = MAB489"]
+                },
+                {
+                    "codigo": "ICP031",
+                    "nome": "Tóp Esp em Comp Científica I",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP351 (P), ICP365 (P)",
+                        "ICP365 = ICP232",
+                        "ICP365 = MAB232"
+                    ]
+                },
+                {
+                    "codigo": "ICP032",
+                    "nome": "Tóp Esp em Comp Científica II",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP351 (P), ICP365 (P)",
+                        "ICP365 = MAB232",
+                        "ICP365 = ICP232"
+                    ]
+                },
+                {
+                    "codigo": "ICP035",
+                    "nome": "Tóp Esp em Teoria da Comput I",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP116 (P), ICP144 (P)",
+                        "ICP116 = MAB116",
+                        "ICP144 = MAB352",
+                        "ICP144 = ICP352"
+                    ]
+                },
+                {
+                    "codigo": "ICP036",
+                    "nome": "Tóp Esp em Teoria da Comput II",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP116 (P), ICP144 (P)",
+                        "ICP116 = MAB116",
+                        "ICP144 = MAB352",
+                        "ICP144 = ICP352"
+                    ]
+                },
+                {
+                    "codigo": "ICP041",
+                    "nome": "Oficina de Desenv Software I",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP237 (P)",
+                        "ICP237 = ICP535",
+                        "ICP237 = MAB535"
+                    ]
+                },
+                {
+                    "codigo": "ICP042",
+                    "nome": "Oficina de Desenv Software II",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP237 (P)",
+                        "ICP237 = MAB535",
+                        "ICP237 = ICP535"
+                    ]
+                },
+                {
+                    "codigo": "ICP051",
+                    "nome": "Tóp Esp em Eng de Software I",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP237 (P)",
+                        "ICP237 = ICP535",
+                        "ICP237 = MAB535"
+                    ]
+                },
+                {
+                    "codigo": "ICP052",
+                    "nome": "Tóp Esp em Eng de Software II",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP237 (P)",
+                        "ICP237 = ICP535",
+                        "ICP237 = MAB535"
+                    ]
+                },
+                {
+                    "codigo": "ICP061",
+                    "nome": "Desenvolvimento Web I",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP239 (P)",
+                        "ICP239 = MAB240",
+                        "ICP239 = ICP240"
+                    ]
+                },
+                {
+                    "codigo": "ICP062",
+                    "nome": "Desenvolvimento Web II",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP239 (P)",
+                        "ICP239 = MAB240",
+                        "ICP239 = ICP240"
+                    ]
+                },
+                {
+                    "codigo": "ICP071",
+                    "nome": "Tóp Esp em Sist Computacion I",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP361 (P)",
+                        "ICP361 = ICP117",
+                        "ICP361 = MAB117"
+                    ]
+                },
+                {
+                    "codigo": "ICP072",
+                    "nome": "Tóp Esp em Sist Computacion II",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP362 (P)",
+                        "ICP362 = MAB510",
+                        "ICP362 = ICP510"
+                    ]
+                },
+                {
+                    "codigo": "ICP081",
+                    "nome": "Oficina de Teconologia I",
+                    "ch": { "teorica": 30, "pratica": 0, "extensao": 0 },
+                    "creditos": 2.0,
+                    "requisitos": [
+                        "ICP141 (P), ICP239 (P)",
+                        "ICP141 = CMT012 + MAB121",
+                        "ICP141 = ICP120",
+                        "ICP239 = MAB240",
+                        "ICP141 = MAB120",
+                        "ICP141 = CMT012 + ICP121",
+                        "ICP239 = ICP240"
+                    ]
+                },
+                {
+                    "codigo": "ICP082",
+                    "nome": "Oficina de Teconologia II",
+                    "ch": { "teorica": 30, "pratica": 0, "extensao": 0 },
+                    "creditos": 2.0,
+                    "requisitos": [
+                        "ICP141 (P), ICP239 (P)",
+                        "ICP141 = CMT012 + MAB121",
+                        "ICP141 = CMT012 + ICP121",
+                        "ICP141 = MAB120",
+                        "ICP239 = ICP240",
+                        "ICP239 = MAB240",
+                        "ICP141 = ICP120"
+                    ]
+                },
+                {
+                    "codigo": "ICP083",
+                    "nome": "Oficina de Teconologia III",
+                    "ch": { "teorica": 30, "pratica": 0, "extensao": 0 },
+                    "creditos": 2.0,
+                    "requisitos": [
+                        "ICP141 (P), ICP239 (P)",
+                        "ICP239 = MAB240",
+                        "ICP141 = CMT012 + MAB121",
+                        "ICP141 = CMT012 + ICP121",
+                        "ICP141 = ICP120",
+                        "ICP239 = ICP240",
+                        "ICP141 = MAB120"
+                    ]
+                },
+                {
+                    "codigo": "ICP084",
+                    "nome": "Oficina de Teconologia IV",
+                    "ch": { "teorica": 30, "pratica": 0, "extensao": 0 },
+                    "creditos": 2.0,
+                    "requisitos": [
+                        "ICP141 (P), ICP239 (P)",
+                        "ICP239 = MAB240",
+                        "ICP141 = MAB120",
+                        "ICP239 = ICP240",
+                        "ICP141 = ICP120",
+                        "ICP141 = CMT012 + MAB121",
+                        "ICP141 = CMT012 + ICP121"
+                    ]
+                },
+                {
+                    "codigo": "ICP085",
+                    "nome": "Oficina de Teconologia V",
+                    "ch": { "teorica": 30, "pratica": 0, "extensao": 0 },
+                    "creditos": 2.0,
+                    "requisitos": [
+                        "ICP141 (P), ICP239 (P)",
+                        "ICP141 = CMT012 + MAB121",
+                        "ICP141 = CMT012 + ICP121",
+                        "ICP141 = ICP120",
+                        "ICP141 = MAB120",
+                        "ICP239 = MAB240",
+                        "ICP239 = ICP240"
+                    ]
+                },
+                {
+                    "codigo": "ICP091",
+                    "nome": "Tóp Esp em Ciência Comput I",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": []
+                },
+                {
+                    "codigo": "ICP092",
+                    "nome": "Tóp Esp em Ciência Comput II",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": []
+                },
+                {
+                    "codigo": "ICP093",
+                    "nome": "Tóp Esp em Ciência Comput III",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": []
+                },
+                {
+                    "codigo": "ICP094",
+                    "nome": "Tóp Esp em Ciência Comput IV",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": []
+                },
+                {
+                    "codigo": "ICP095",
+                    "nome": "Tóp Esp em Ciência Comput V",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": []
+                },
+                {
+                    "codigo": "ICP100",
+                    "nome": "Introd Gestão Estratégica Ti",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": []
+                },
+                {
+                    "codigo": "ICP102",
+                    "nome": "Tecn para Grandes Vol de Dados",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP489 (P)", "ICP489 = MAB489"]
+                },
+                {
+                    "codigo": "ICP103",
+                    "nome": "Análise de Risco",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["MAD243 (P)", "MAD243 = MAD233"]
+                },
+                {
+                    "codigo": "ICP356",
+                    "nome": "Organização de Dados II",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP116 (P)", "ICP116 = MAB116"]
+                },
+                {
+                    "codigo": "ICP357",
+                    "nome": "Data Warehousing e Intel Negóc",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP489 (P)", "ICP489 = MAB489"]
+                },
+                {
+                    "codigo": "ICP359",
+                    "nome": "Introd ao Suporte à Decisão",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["MAD243 (P)"]
+                },
+                {
+                    "codigo": "ICP367",
+                    "nome": "Sistemas Distribuídos",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP361 (P), ICP362 (P)",
+                        "ICP362 = ICP510",
+                        "ICP361 = ICP117",
+                        "ICP361 = MAB117",
+                        "ICP362 = MAB510"
+                    ]
+                },
+                {
+                    "codigo": "ICP465",
+                    "nome": "Tóp Esp Informática Sociedade",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": []
+                },
+                {
+                    "codigo": "ICP471",
+                    "nome": "Compiladores",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP116 (P), ICP123 (P), ICP353 (P)",
+                        "ICP116 = MAB116",
+                        "ICP123 = MAB123",
+                        "ICP353 = MAB353"
+                    ]
+                },
+                {
+                    "codigo": "ICP478",
+                    "nome": "Métodos Numéricos I",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP231 (P)",
+                        "ICP231 = ICP230",
+                        "ICP231 = MAB230",
+                        "ICP231 = MAB231",
+                        "ICP231 = ICP238 + ICP248"
+                    ]
+                },
+                {
+                    "codigo": "ICP491",
+                    "nome": "Banco de Dados II",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP489 (P)", "ICP489 = MAB489"]
+                },
+                {
+                    "codigo": "ICP508",
+                    "nome": "Inteligência Artificial",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP368 (P)", "ICP368 = MAB368"]
+                },
+                {
+                    "codigo": "ICP518",
+                    "nome": "Teoria de Grafos",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP368 (P)", "ICP368 = MAB368"]
+                },
+                {
+                    "codigo": "ICP532",
+                    "nome": "Mineração de Dados",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP489 (P), MAD243 (P)",
+                        "ICP489 = MAB489",
+                        "MAD243 = MAD233"
+                    ]
+                },
+                {
+                    "codigo": "ICP603",
+                    "nome": "Gestão do Conhecimento",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP142 (P)",
+                        "ICP142 = ICP113",
+                        "ICP142 = MAB113"
+                    ]
+                },
+                {
+                    "codigo": "ICP605",
+                    "nome": "Recuperação de Informação",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP116 (P)", "ICP116 = MAB116"]
+                },
+                {
+                    "codigo": "ICP606",
+                    "nome": "Tóp Esp em Programação",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP368 (P)", "ICP368 = MAB368"]
+                },
+                {
+                    "codigo": "ICP616",
+                    "nome": "Interação Humano-computador",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP237 (P)",
+                        "ICP237 = ICP535",
+                        "ICP237 = MAB535"
+                    ]
+                },
+                {
+                    "codigo": "ICP622",
+                    "nome": "Program Paralela e Distribuída",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP361 (P)",
+                        "ICP361 = MAB117",
+                        "ICP361 = ICP117"
+                    ]
+                },
+                {
+                    "codigo": "ICP633",
+                    "nome": "Algoritmos de Aproximação",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP368 (P)", "ICP368 = MAB368"]
+                },
+                {
+                    "codigo": "ICP636",
+                    "nome": "Algoritmos Paralelos",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": ["ICP368 (P)", "ICP368 = MAB368"]
+                },
+                {
+                    "codigo": "ICP638",
+                    "nome": "Computação Algébrica",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP115 (P), ICP131 (P), ICP134 (P)",
+                        "ICP115 = MAB115",
+                        "ICP131 = CMT012 + MAB121",
+                        "ICP131 = ICP120",
+                        "ICP134 = MAB624",
+                        "ICP134 = ICP624",
+                        "ICP131 = MAB120",
+                        "ICP131 = CMT012 + ICP121"
+                    ]
+                },
+                {
+                    "codigo": "ICP639",
+                    "nome": "Computação Quântica",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP115 (P), ICP134 (P)",
+                        "ICP115 = MAB115",
+                        "ICP134 = MAB624",
+                        "ICP134 = ICP624"
+                    ]
+                },
+                {
+                    "codigo": "ICP640",
+                    "nome": "Projeto Teste de Software",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP237 (P)",
+                        "ICP237 = MAB535",
+                        "ICP237 = ICP535"
+                    ]
+                },
+                {
+                    "codigo": "ICPX03",
+                    "nome": "Monitoria I",
+                    "ch": { "teorica": 0, "pratica": 90, "extensao": 0 },
+                    "creditos": 2.0,
+                    "requisitos": []
+                },
+                {
+                    "codigo": "ICPX04",
+                    "nome": "Monitoria II",
+                    "ch": { "teorica": 0, "pratica": 90, "extensao": 0 },
+                    "creditos": 2.0,
+                    "requisitos": ["ICPX03 (P)", "ICPX03 = MABX03"]
+                },
+                {
+                    "codigo": "IEE115",
+                    "nome": "Economia",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": []
+                },
+                {
+                    "codigo": "LEB599",
+                    "nome": "Est da Líng Bras de Sinais I",
+                    "ch": { "teorica": 60, "pratica": 0, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": []
+                },
+                {
+                    "codigo": "MAE993",
+                    "nome": "Cálculo Int e Diferencial III",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "MAE992 (P)",
+                        "MAE992 = MAE121",
+                        "MAE992 = MAC128"
+                    ]
+                },
+                {
+                    "codigo": "MAE994",
+                    "nome": "Cálculo Int e Diferencial IV",
+                    "ch": { "teorica": 45, "pratica": 15, "extensao": 0 },
+                    "creditos": 4.0,
+                    "requisitos": [
+                        "ICP115 (P), MAE992 (P)",
+                        "MAE992 = MAE121",
+                        "ICP115 = MAE115 + MAE125",
+                        "ICP115 = MAB115",
+                        "MAE992 = MAC128"
+                    ]
                 }
             ]
         },
@@ -557,320 +1187,204 @@
                 {
                     "codigo": "FCF108",
                     "nome": "Ética I",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "FCF614",
                     "nome": "Ética II",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "FCF615",
                     "nome": "Ética III",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "FCF616",
                     "nome": "Ética IV",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP101",
                     "nome": "Teoria Direitos Fundamentais",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP110",
                     "nome": "Fund Direitos Humanos",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP120",
                     "nome": "Fund Polít Públicas Dir Hum",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP130",
                     "nome": "Tóp Esp Polít Públ Dir Hum I",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 45,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 45, "extensao": 15 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP140",
                     "nome": "Tóp Esp Polít Públ Dir Hum II",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 45,
-                        "extensao": 15
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 45, "extensao": 15 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP141",
                     "nome": "Tóp Esp Polít Públ Dir Hum III",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP142",
                     "nome": "Tóp Esp Polít Públ Dir Hum IV",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP143",
                     "nome": "Tóp Esp Polít Públ Dir Hum V",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP144",
                     "nome": "Tóp Esp Polít Públ Dir Hum VI",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 30,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 30, "extensao": 0 },
+                    "creditos": 2.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP145",
                     "nome": "Tóp Esp Polít Públ Dir Hum VII",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 30,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 30, "extensao": 0 },
+                    "creditos": 2.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP146",
                     "nome": "Dir Hum, Gênero e Sexualidades",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP147",
                     "nome": "Dir Hum e Democracia",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP148",
                     "nome": "Dir Hum, Pens Negro e Racismo",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP149",
                     "nome": "Dir Hum e Meio Ambiente",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP150",
                     "nome": "Dir Hum e Saúde",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP151",
                     "nome": "Dir Hum e Cultura",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP152",
                     "nome": "Dir Hum, Conflit e Territórios",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP153",
                     "nome": "Dir Hum e Trabalho",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP154",
                     "nome": "Dir Hum e Sistema de Justiça",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP155",
                     "nome": "Dir Hum e Movimentos Sociais",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP156",
                     "nome": "Dir Hum, Globalização e Tecnol",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP157",
                     "nome": "Dir Hum, Violência e Democrac",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP158",
                     "nome": "Dir Hum e Polít Internacional",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP159",
                     "nome": "Dir Hum e Desigualdade Sociais",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 },
                 {
                     "codigo": "NEP160",
                     "nome": "Dir Hum na América Latina",
-                    "ch": {
-                        "teorica": null,
-                        "pratica": 60,
-                        "extensao": 0
-                    },
-                    "creditos": 0,
+                    "ch": { "teorica": null, "pratica": 60, "extensao": 0 },
+                    "creditos": 4.0,
                     "requisitos": []
                 }
             ]
