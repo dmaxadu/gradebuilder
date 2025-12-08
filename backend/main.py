@@ -298,23 +298,24 @@ def layered_layout(payload: LayoutRequest):
     if not nx.is_directed_acyclic_graph(G):
         raise HTTPException(status_code=400, detail="Graph contains cycles")
 
+    # Use user's period assignments instead of calculating new layers
     node_layer: Dict[str, int] = {}
-    for node_id in nx.topological_sort(G):
-        predecessors = list(G.predecessors(node_id))
-        if not predecessors:
-            node_layer[node_id] = 1
-        else:
-            max_pred_layer = max(node_layer[pred] for pred in predecessors)
-            node_layer[node_id] = max_pred_layer + 1
+    for node in payload.nodes:
+        periodo = node.data.get("periodo", 0)
+        if periodo > 0:
+            node_layer[node.id] = periodo
 
+    # Group nodes by their assigned period (user's column placement)
     layers: Dict[int, List[str]] = defaultdict(list)
     for node_id, layer in node_layer.items():
         layers[layer].append(node_id)
 
     ordered_layers = sorted(layers.keys())
 
+    # Initialize order with current nodes in each layer
     order: Dict[int, List[str]] = {layer: sorted(nodes) for layer, nodes in layers.items()}
 
+    # Sweep algorithm to minimize edge crossings within each column
     def sweep_left_to_right():
         for i in range(1, len(ordered_layers)):
             prev_layer = ordered_layers[i - 1]
@@ -345,6 +346,7 @@ def layered_layout(payload: LayoutRequest):
 
             order[curr_layer] = sorted(order[curr_layer], key=key)
 
+    # Run multiple sweeps to converge on optimal ordering
     for _ in range(4):
         sweep_left_to_right()
         sweep_right_to_left()
@@ -355,8 +357,10 @@ def layered_layout(payload: LayoutRequest):
     node_height = 80.0
     row_gap = 20.0
 
-    for col_index, layer in enumerate(ordered_layers):
-        x = col_index * column_width
+    # Assign positions based on optimized order
+    # Keep X position based on user's period assignment
+    for layer in ordered_layers:
+        x = (layer - 1) * column_width  # Use layer directly as it's the user's period
         for row_index, node_id in enumerate(order[layer]):
             y = row_index * (node_height + row_gap)
             positions[node_id] = {"x": x, "y": y}

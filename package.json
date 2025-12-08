@@ -1,0 +1,28 @@
+{
+  "name": "gradebuilder",
+  "version": "1.0.0",
+  "description": "Full-stack curriculum planning application with interactive drag-and-drop interface",
+  "scripts": {
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:backend": "cd backend && ../.venv/Scripts/activate && uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "start:frontend": "cd front && npm start",
+    "install:all": "pip install -r backend/requirements.txt && cd front && npm install",
+    "build:frontend": "cd front && npm run build"
+  },
+  "keywords": [
+    "curriculum",
+    "grade-planner",
+    "fastapi",
+    "react",
+    "reactflow"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}

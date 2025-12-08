@@ -7,7 +7,14 @@
       "Bash(timeout:*)",
       "Bash(curl:*)",
       "Bash(python -c:*)",
-      "Bash(ping:*)"
+      "Bash(ping:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(start \"GradeBuilder Backend\" cmd /k \"..\\.venv\\Scripts\\activate && uvicorn main:app --reload --host 0.0.0.0 --port 8000\")",
+      "Bash(../.venv/Scripts/python:*)",
+      "Bash(.venv/Scripts/pip install:*)"
     ],
     "deny": [],
     "ask": []

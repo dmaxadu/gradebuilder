@@ -662,6 +662,53 @@ function GradeBuilder() {
         }, 300);
     };
 
+    const handleResetGraph = useCallback(() => {
+        const confirmReset = window.confirm(
+            "Tem certeza que deseja resetar a grade? Todas as suas alterações serão perdidas e a grade voltará ao estado inicial."
+        );
+
+        if (confirmReset) {
+            // Regenera os dados do currículo (igual ao useEffect inicial)
+            const { nodes: initialNodes, edges: initialEdges } = generateCurriculumData();
+            const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(initialNodes, initialEdges);
+
+            // Calcula o período máximo
+            let maxP = 0;
+            layoutedNodes.forEach((n) => {
+                if (!n.id.startsWith("header-") && n.data.periodo > maxP) {
+                    maxP = n.data.periodo;
+                }
+            });
+
+            const initialMax = maxP + 1;
+            setMaxPeriod(initialMax);
+
+            // Adiciona os headers dos períodos
+            const initialTotals = calculateCreditsPerPeriod(layoutedNodes);
+            const headerNodes = getPeriodHeaders(initialTotals, initialMax);
+
+            // Combina nós e aplica visibilidade de arestas
+            const allNodes = [...layoutedNodes, ...headerNodes];
+            const visibleEdges = applyElectiveEdgeVisibility(layoutedEdges, allNodes);
+
+            setNodes(allNodes);
+            setEdges(visibleEdges);
+
+            // Salva o estado resetado no backend
+            if (token) {
+                saveGraph(allNodes, visibleEdges, token)
+                    .then(() => {
+                        setShowSaved(true);
+                        setTimeout(() => setShowSaved(false), 2000);
+                    })
+                    .catch(err => console.error('Error saving reset graph:', err));
+            }
+
+            setToast({ message: 'Grade resetada com sucesso!', type: 'success' });
+            setTimeout(() => setToast(null), 3000);
+        }
+    }, [token]);
+
     const handleOptimizeLayout = useCallback(async () => {
         try {
             const mainGraphNodes = nodes.filter(
@@ -689,62 +736,25 @@ function GradeBuilder() {
             const result = await optimizeLayout(serializableNodes, mainGraphEdges, token);
 
             setNodes((currentNodes) => {
-                const updatedNodes = currentNodes.map(node => {
+                return currentNodes.map(node => {
+                    // Only update Y position for main graph nodes
+                    // Keep the period (column/X position) exactly as the user placed it
                     if (!node.id.startsWith("header-") &&
                         node.data?.periodo &&
                         node.data.periodo > 0 &&
                         result.positions &&
                         result.positions[node.id]) {
 
-                        const backendX = result.positions[node.id].x;
-                        const newPeriod = Math.round(backendX / 250.0) + 1;
-
                         return {
                             ...node,
                             position: {
-                                x: (newPeriod - 1) * COLUMN_WIDTH,
-                                y: result.positions[node.id].y,
-                            },
-                            data: {
-                                ...node.data,
-                                periodo: newPeriod,
+                                x: node.position.x, // Keep user's column placement
+                                y: result.positions[node.id].y, // Only update Y from API
                             },
                         };
                     }
                     return node;
                 });
-
-                const electiveNodes = updatedNodes.filter(n => n.data?.periodo && n.data.periodo <= 0);
-                if (electiveNodes.length > 0) {
-                    const mainGraphNodes = updatedNodes.filter(n => n.data?.periodo && n.data.periodo > 0);
-                    let maxMainY = 0;
-                    mainGraphNodes.forEach(n => {
-                        if (n.position.y + nodeHeight > maxMainY) {
-                            maxMainY = n.position.y + nodeHeight;
-                        }
-                    });
-
-                    const baseY = maxMainY + ROW_HEIGHT * 2;
-
-                    return updatedNodes.map(node => {
-                        if (node.id === "header-electives" || node.id === "header-electives-restricted") {
-                            const isRestricted = node.id === "header-electives-restricted";
-                            const headerX = isRestricted ?
-                                (Math.max(...mainGraphNodes.map(n => n.data.periodo)) + 1) * COLUMN_WIDTH :
-                                0;
-                            return {
-                                ...node,
-                                position: {
-                                    x: headerX,
-                                    y: baseY - 80
-                                }
-                            };
-                        }
-                        return node;
-                    });
-                }
-
-                return updatedNodes;
             });
 
             setToast({ message: "Layout optimizado! Cruzamentos de arestas minimizados.", type: "success" });
@@ -1132,7 +1142,6 @@ function GradeBuilder() {
 
                 const newTotals = calculateCreditsPerPeriod(nodesWithNewData);
 
-                const nodesByPeriod = {};
                 const subjectNodes = [];
                 const electiveHeaderNodes = [];
 
@@ -1147,32 +1156,24 @@ function GradeBuilder() {
                     if (!n.id.startsWith("header-")) subjectNodes.push(n);
                 });
 
-                subjectNodes.forEach((n) => {
-                    const p = n.data.periodo;
-                    if (!nodesByPeriod[p]) nodesByPeriod[p] = [];
-                    nodesByPeriod[p].push(n);
-                });
-
+                // Only adjust X position to snap to column center
+                // Preserve Y positions to maintain user's or optimized layout
                 const processedSubjects = subjectNodes.map((n) => {
                     const p = n.data.periodo;
 
                     if (!p || p <= 0) return n;
 
-                    const columnNodes = nodesByPeriod[p].filter(
-                        (x) => x.data.periodo === p && x.data.periodo > 0
-                    );
+                    // Only update the node that was dragged
+                    if (n.id === node.id) {
+                        const newX = (p - 1) * COLUMN_WIDTH;
+                        return {
+                            ...n,
+                            position: { x: newX, y: n.position.y }, // Keep current Y
+                            data: { ...n.data, initialY: n.position.y },
+                        };
+                    }
 
-                    columnNodes.sort((a, b) => a.position.y - b.position.y);
-                    const index = columnNodes.findIndex((x) => x.id === n.id);
-
-                    const newX = (p - 1) * COLUMN_WIDTH;
-                    const newY = index * ROW_HEIGHT;
-
-                    return {
-                        ...n,
-                        position: { x: newX, y: newY },
-                        data: { ...n.data, initialY: newY },
-                    };
+                    return n;
                 });
 
                 const updatedHeaders = getPeriodHeaders(
@@ -1577,10 +1578,40 @@ function GradeBuilder() {
                         )}
                     </div>
                     <button
+                        onClick={handleResetGraph}
+                        style={{
+                            background: "linear-gradient(135deg, #d4a017 0%, #f3c332 50%, #ffdb58 100%)",
+                            color: "white",
+                            border: "none",
+                            padding: "8px 16px",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                            fontSize: "14px",
+                            fontWeight: "600",
+                            textShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
+                            transition: "transform 0.2s, box-shadow 0.2s",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px"
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "translateY(-2px)";
+                            e.currentTarget.style.boxShadow = "0 4px 12px rgba(243, 195, 50, 0.4)";
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "translateY(0)";
+                            e.currentTarget.style.boxShadow = "none";
+                        }}
+                        title="Resetar grade para o estado inicial"
+                    >
+                        <span style={{ fontSize: "16px" }}>🔄</span>
+                        Resetar
+                    </button>
+                    <button
                         onClick={handleLogout}
                         disabled={isLoggingOut}
                         style={{
-                            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                            background: "linear-gradient(135deg, #d4a017 0%, #f3c332 50%, #ffdb58 100%)",
                             color: "white",
                         border: "none",
                         padding: "8px 16px",
@@ -1588,7 +1619,19 @@ function GradeBuilder() {
                         cursor: isLoggingOut ? "not-allowed" : "pointer",
                         fontSize: "14px",
                         fontWeight: "600",
-                        opacity: isLoggingOut ? 0.7 : 1
+                        textShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
+                        opacity: isLoggingOut ? 0.7 : 1,
+                        transition: "transform 0.2s, box-shadow 0.2s"
+                    }}
+                    onMouseEnter={(e) => {
+                        if (!isLoggingOut) {
+                            e.currentTarget.style.transform = "translateY(-2px)";
+                            e.currentTarget.style.boxShadow = "0 4px 12px rgba(243, 195, 50, 0.4)";
+                        }
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.boxShadow = "none";
                     }}
                 >
                     {isLoggingOut ? (
@@ -1626,7 +1669,7 @@ function GradeBuilder() {
                     bottom: "20px",
                     left: "20px",
                     zIndex: 1000,
-                    background: "linear-gradient(135deg, #4caf50 0%, #45a049 100%)",
+                    background: "linear-gradient(135deg, #d4a017 0%, #f3c332 50%, #ffdb58 100%)",
                     color: "white",
                     border: "none",
                     padding: "12px 20px",
@@ -1634,7 +1677,8 @@ function GradeBuilder() {
                     cursor: "pointer",
                     fontSize: "14px",
                     fontWeight: "600",
-                    boxShadow: "0 4px 12px rgba(76, 175, 80, 0.3)",
+                    textShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
+                    boxShadow: "0 4px 12px rgba(243, 195, 50, 0.3)",
                     transition: "transform 0.2s, box-shadow 0.2s",
                     display: "flex",
                     alignItems: "center",
@@ -1642,11 +1686,11 @@ function GradeBuilder() {
                 }}
                 onMouseEnter={(e) => {
                     e.currentTarget.style.transform = "translateY(-2px)";
-                    e.currentTarget.style.boxShadow = "0 6px 16px rgba(76, 175, 80, 0.4)";
+                    e.currentTarget.style.boxShadow = "0 6px 16px rgba(243, 195, 50, 0.4)";
                 }}
                 onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(76, 175, 80, 0.3)";
+                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(243, 195, 50, 0.3)";
                 }}
                 title="Reorganiza os nós para minimizar cruzamentos de arestas"
             >
