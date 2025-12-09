@@ -1666,8 +1666,8 @@ function GradeBuilder() {
                 onClick={handleOptimizeLayout}
                 style={{
                     position: "absolute",
-                    bottom: "20px",
-                    left: "20px",
+                    bottom: "15px",
+                    left: "70px",
                     zIndex: 1000,
                     background: "linear-gradient(135deg, #d4a017 0%, #f3c332 50%, #ffdb58 100%)",
                     color: "white",
