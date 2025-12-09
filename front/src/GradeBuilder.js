@@ -538,8 +538,19 @@ const getLineageNodes = (node, nodes, edges) => {
 };
 
 const regenerateNodeLabels = (nodes, creditTotals = {}) => {
+    // 1. Criar um mapa para buscar o Nome da disciplina pelo Código
+    const nameMap = {};
+    if (CURRICULUM_DATA && CURRICULUM_DATA.periodos) {
+        CURRICULUM_DATA.periodos.forEach((periodo) => {
+            periodo.disciplinas.forEach((disc) => {
+                nameMap[disc.codigo] = disc.nome;
+            });
+        });
+    }
+
     return nodes.map(node => {
         if (node.type === "header") {
+            // ... (Mantenha o código dos headers exatamente igual ao que você já tem) ...
             if (node.id.startsWith("header-period-")) {
                 const periodMatch = node.id.match(/header-period-(\d+)/);
                 if (periodMatch) {
@@ -566,14 +577,11 @@ const regenerateNodeLabels = (nodes, creditTotals = {}) => {
 
                     return {
                         ...node,
-                        data: {
-                            ...node.data,
-                            label: labelContent,
-                        },
+                        data: { ...node.data, label: labelContent },
                     };
                 }
             } else if (node.id === "header-electives") {
-                const labelContent = (
+                 const labelContent = (
                     <div>
                         <div style={{ fontSize: "16px", fontWeight: "bold", color: "#333" }}>
                             Disciplinas Optativas (Escolha Condicionada)
@@ -583,14 +591,7 @@ const regenerateNodeLabels = (nodes, creditTotals = {}) => {
                         </div>
                     </div>
                 );
-
-                return {
-                    ...node,
-                    data: {
-                        ...node.data,
-                        label: labelContent,
-                    },
-                };
+                return { ...node, data: { ...node.data, label: labelContent } };
             } else if (node.id === "header-electives-restricted") {
                 const labelContent = (
                     <div>
@@ -602,22 +603,19 @@ const regenerateNodeLabels = (nodes, creditTotals = {}) => {
                         </div>
                     </div>
                 );
-
-                return {
-                    ...node,
-                    data: {
-                        ...node.data,
-                        label: labelContent,
-                    },
-                };
+                return { ...node, data: { ...node.data, label: labelContent } };
             }
 
             return node;
         }
 
+        // --- CORREÇÃO AQUI ---
+        // Recupera o nome usando o mapa ou usa o código como fallback
+        const nodeName = nameMap[node.id] || nameMap[node.data.codigo] || node.data.codigo || node.id;
+
         const labelContent = (
             <>
-                {node.data.codigo || node.id}
+                {nodeName} {/* Usa o nome recuperado */}
                 <div
                     style={{
                         fontSize: "10px",
