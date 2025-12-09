@@ -6,3 +6,4 @@ bcrypt
 python-dotenv
 sqlalchemy
 email-validator
+psycopg2-binary
