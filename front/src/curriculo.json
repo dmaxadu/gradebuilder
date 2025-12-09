@@ -177,7 +177,9 @@
                     "requisitos": [
                         "ICP115 (P)",
                         "ICP238 (P)",
-                        "MAE992 (P)MAE992 = MAC128MAE992 = MAE121"
+                        "MAE992 (P)",
+                        "MAE992 = MAC128",
+                        "MAE992 = MAE121"
                     ]
                 },
                 {
@@ -201,7 +203,7 @@
                     "creditos": 4.0,
                     "requisitos": [
                         "MAE121 (P)",
-                        "MAE121 = MAE992",
+                        "MAE992 = MAE121",
                         "MAE121 = MAC128"
                     ]
                 }
@@ -217,7 +219,13 @@
                     "creditos": 4.0,
                     "requisitos": [
                         "ICP141 (P)",
-                        "ICP144 (P)ICP141 = ICP120ICP141 = CMT012 + ICP121ICP144 = MAB352ICP144 = ICP352ICP141 = MAB120ICP141 = CMT012 + MAB121"
+                        "ICP144 (P)",
+                        "ICP141 = ICP120",
+                        "ICP141 = CMT012 + ICP121",
+                        "ICP144 = MAB352",
+                        "ICP144 = ICP352",
+                        "ICP141 = MAB120",
+                        "ICP141 = CMT012 + MAB121"
                     ]
                 },
                 {
@@ -227,7 +235,8 @@
                     "creditos": 4.0,
                     "requisitos": [
                         "ICP115 (P)",
-                        "MAD243 (P)MAD243 = MAD201ICP115 = MAB115"
+                        "MAD243 (P)",
+                        "MAD243 = MAD201ICP115 = MAB115"
                     ]
                 },
                 {
@@ -256,7 +265,8 @@
                     "creditos": 4.0,
                     "requisitos": [
                         "ICP116 (P)",
-                        "ICP144 (P)ICP116 = MAB116ICP144 = MAB352ICP144 = ICP352"
+                        "ICP144 (P)",
+                        "ICP116 = MAB116ICP144 = MAB352ICP144 = ICP352"
                     ]
                 }
             ]
