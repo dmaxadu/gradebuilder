@@ -7,11 +7,12 @@ import os
 # Database configuration
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./gradebuilder.db")
 
-# Create engine
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {}
-)
+# Create engine with appropriate settings for SQLite or PostgreSQL
+connect_args = {}
+if "sqlite" in DATABASE_URL:
+    connect_args = {"check_same_thread": False}
+
+engine = create_engine(DATABASE_URL, connect_args=connect_args)
 
 # Session
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
