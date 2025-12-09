@@ -440,6 +440,7 @@ const generateCurriculumData = () => {
                     position: { x: 0, y: 0 },
                     targetPosition: "left",
                     sourcePosition: "right",
+                    connectable: false,
                     style: {
                         background: isElective
                             ? isRestrictedElective
