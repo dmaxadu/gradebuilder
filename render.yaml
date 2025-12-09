@@ -30,7 +30,6 @@ services:
   - type: web
     name: gradebuilder-frontend
     runtime: static
-    plan: free
     buildCommand: cd front && npm install && npm run build
     staticPublishPath: front/build
     pullRequestPreviewsEnabled: true
